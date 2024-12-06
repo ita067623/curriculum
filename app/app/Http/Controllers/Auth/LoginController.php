@@ -36,39 +36,5 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-
-        
     }
-
-
-
-
-// tuika ログインの処理
-    public function login(Request $request)
-    {
-        // バリデーション
-        $credentials = $request->only('email', 'password');
-
-        // 認証処理
-        if (Auth::attempt($credentials)) {
-            // 認証成功後にリダイレクト
-            return redirect()->route('main');
-        } else {
-            // 認証失敗時の処理
-            return redirect()->back()->withErrors(['email' => 'メールアドレスまたはパスワードが間違っています。']);
-        }
-    }
-
-
-
-
-
-
-
-// tuika  uthenticatedメソッド
-    public function authenticated(Request $request, $user)
-{
-    // return redirect()->route('main');
-    return view('main');
-}
 }

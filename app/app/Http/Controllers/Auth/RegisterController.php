@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request; 
 
 class RegisterController extends Controller
-{
+ { 
+   
+
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -41,7 +43,12 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+     $this->middleware('guest');
+          // ユーザー登録後、ログインをした状態にして、完了画面を表示するため、completeではguestミドルウェアを無効にする
+        //   $this->middleware('guest', ['except' => 'complete']);
+
+
+        
     }
 
     /**
@@ -53,12 +60,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
 
-        // 変更
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        //  変更
+         return Validator::make($data, [
+             'name' => ['required', 'string', 'min:2', 'max:16', 'unique:users'],
+             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+             'password' => ['required', 'string', 'min:8', 'max:16'],
+         ]);
     }
 
     /**
@@ -74,26 +81,77 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
-
-        // 追加
-    }public function register(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|unique:users,email|max:50',
-            'name' => 'required|string|max:50',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        // 会員情報を保存
-        User::create([
-            'email' => $request->email,
-            'name' => $request->name,
-            'password' => bcrypt($request->password),
-        ]);
-
-        // return redirect()->route('main')->with('status', '登録が完了しました！');
-        return view('main');
     }
-}
 
+    /**
+     * 入力画面を表示
+     */
+//     public function register()
+//     {
+//         return view('auth.register');
+//     }
+
+//     /**
+//      * 確認画面を表示
+//      */
+//     public function confirm(Request $request)
+//     {
+//         // バリデーションの処理
+//         $validatedData = $request->validate([
+//             'name' => 'required|string|min:2|max:16|unique:users',
+//             'email' => 'required|email|max:255|unique:users',
+//             'password' => 'required|string|min:8|max:16',
+//         ]);
+
+//         dd($validatedData); // バリデーション後のデータを確認
+
+
+//         // password非表示
+//         $validatedData['password']='********';
+        
+//         $request->session()->put('register',$validatedData);
+
+//         // 登録確認画面にリダイレクト
+//         return  view('signup_conf',['data' =>$validatedData]);
+//     }
+
+    
+
+//     public function store(Request $request)
+//     {
+//     $data = $request->session()->get('register');
+
+//     // 実際にデータベースに保存する際はパスワードをハッシュ化
+//     User::create([
+//         'name' => $data['name'],
+//         'email' => $data['email'],
+//         'password' => Hash::make($request->session()->get('register_original_password')),
+//     ]);
+
+//     // セッションデータを削除
+//     $request->session()->forget('register');
+
+//     return redirect()->route('register.complete');
+// }
+
+// public function complete()
+// {
+//     return view('signup_comp');
+// }
+
+//  /**
+//      * Create a new user instance after a valid registration.
+//      *
+//      * @param  array  $data
+//      * @return \App\User
+//      */
+//     protected function create(array $data)
+//     {
+//         return User::create([
+//             'name' => $data['name'],
+//             'email' => $data['email'],
+//             'password' => Hash::make($data['password']),
+//         ]);
+//     }
+
+}
