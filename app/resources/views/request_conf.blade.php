@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
 <div class="container mt-5">
@@ -11,30 +11,19 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        .info-group {
-            margin-bottom: 15px;
-        }
-        .info-group label {
+        .form-group label {
             font-weight: bold;
             margin-bottom: 5px;
-            display: block;
         }
-        .info-group .info-value {
-            background: #f8f9fa;
-            padding: 10px;
+        .form-control {
+            margin-bottom: 20px;
             border-radius: 5px;
+            padding: 10px;
         }
         .form-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        .btn {
-            padding: 10px 20px;
-            text-decoration: none;
-            color: #fff;
-            border-radius: 5px;
-            display: inline-block;
         }
         .btn-secondary {
             background-color: gray;
@@ -47,44 +36,52 @@
         }
     </style>
 
-    <h1 class="text-center mb-4">依頼内容確認</h1>
-    <form action="{{ route('request.complete') }}" method="POST">
+    <h1 class="text-center mb-4">この内容で依頼を完了しますか？</h1>
+
+    <!-- 確認内容表示 -->
+    <form action="{{ route('request.submit') }}" method="POST">
         @csrf
 
-        <!-- ①依頼内容のタイトル -->
-        <div class="info-group">
+        <!-- 依頼内容のタイトル -->
+        <div class="form-group">
             <label for="title">依頼内容のタイトル</label>
-            <div class="info-value">{{ $data['title'] }}</div>
+            <p>{{ $article->title }}</p>
         </div>
 
-        <!-- ②希望納期 -->
-        <div class="info-group">
+        <!-- 金額 -->
+        <div class="form-group">
+            <label for="price">金額</label>
+            <p>¥{{ number_format($article->price) }}</p>
+        </div>
+
+        <!-- 希望納期 -->
+        <div class="form-group">
             <label for="deadline">希望納期</label>
-            <div class="info-value">{{ $data['deadline'] }}</div>
+            <p>{{ $deadline }}</p>
         </div>
 
-        <!-- ③依頼内容詳細 -->
-        <div class="info-group">
-            <label for="details">依頼内容詳細</label>
-            <div class="info-value">{{ $data['details'] }}</div>
-        </div>
-
-        <!-- ④メールアドレス -->
-        <div class="info-group">
-            <label for="email">メールアドレス</label>
-            <div class="info-value">{{ $data['email'] }}</div>
-        </div>
-
-        <!-- ⑤電話番号 -->
-        <div class="info-group">
+        <!-- 電話番号 -->
+        <div class="form-group">
             <label for="phone">電話番号</label>
-            <div class="info-value">{{ $data['phone'] }}</div>
+            <p>{{ $phone }}</p>
         </div>
 
-        <!-- ⑥戻る & ⑦依頼を確定する -->
+        <!-- メールアドレス -->
+        <div class="form-group">
+            <label for="email">メールアドレス</label>
+            <p>{{ $email }}</p>
+        </div>
+
+        <!-- 依頼内容詳細 -->
+        <div class="form-group">
+            <label for="content">依頼内容詳細</label>
+            <p>{{ $content }}</p>
+        </div>
+
+        <!-- 戻る & 最終確認へ -->
         <div class="form-actions">
-            <a href="{{ route('request.input') }}" class="btn btn-secondary">戻る</a>
-            <button type="submit" class="btn btn-primary">依頼を確定する</button>
+            <a href="{{ url()->previous() }}" class="btn btn-secondary">戻る</a>
+            <button type="submit" class="btn btn-primary">送信</button>
         </div>
     </form>
 </div>

@@ -1,8 +1,9 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
 <div class="container mt-5">
     <style>
+        /* 必要なカスタムCSS */
         .container {
             max-width: 700px;
             margin: 20px auto;
@@ -25,13 +26,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        .btn {
-            padding: 10px 20px;
-            text-decoration: none;
-            color: #fff;
-            border-radius: 5px;
-            display: inline-block;
-        }
         .btn-secondary {
             background-color: gray;
         }
@@ -45,49 +39,56 @@
 
     <h1 class="text-center mb-4">依頼内容入力</h1>
     <form action="{{ route('request.confirm') }}" method="POST">
-        @csrf
+    @csrf
 
-        <!-- ①依頼内容のタイトル -->
-        <div class="form-group">
-            <label for="title">依頼内容のタイトル</label>
-            <input type="text" id="title" name="title" class="form-control" placeholder="タイトルを入力" required>
-        </div>
+    <!-- 依頼内容のタイトル（隠しフィールド） -->
+    <input type="hidden" name="title" value="{{ $article->title }}">
 
-        <!-- ②金額 -->
-        <div class="form-group">
-            <label for="amount">金額</label>
-            <input type="number" id="amount" name="amount" class="form-control" placeholder="金額を入力" required>
-        </div>
+    <!-- 金額（隠しフィールド） -->
+    <input type="hidden" name="price" value="{{ $article->price }}">
 
-        <!-- ③希望納期 -->
-        <div class="form-group">
-            <label for="deadline">希望納期</label>
-            <input type="date" id="deadline" name="deadline" class="form-control" required>
-        </div>
+    <!-- article_id（隠しフィールド） -->
+    <input type="hidden" name="article_id" value="{{ $article->id }}">
 
-        <!-- ④電話番号 -->
-        <div class="form-group">
-            <label for="phone">電話番号</label>
-            <input type="tel" id="phone" name="phone" class="form-control" placeholder="電話番号を入力" required>
-        </div>
+    <!-- その他のフォームフィールド -->
+    <div class="form-group">
+        <label for="title">依頼内容のタイトル</label>
+        <h2 class="h5 mb-1">{{ $article->title }}</h2>
+    </div>
 
-        <!-- ⑤メールアドレス -->
-        <div class="form-group">
-            <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="メールアドレスを入力" required>
-        </div>
+    <div class="form-group">
+        <p class="mb-0">金額: ¥{{ number_format($article->price) }}</p>
+    </div>
 
-        <!-- ⑥依頼内容詳細 -->
-        <div class="form-group">
-            <label for="details">依頼内容詳細</label>
-            <textarea id="details" name="details" class="form-control" rows="5" placeholder="依頼内容の詳細を入力" required></textarea>
-        </div>
+    <!-- 希望納期 -->
+    <div class="form-group">
+        <label for="deadline">希望納期</label>
+        <input type="date" id="deadline" name="deadline" class="form-control" required>
+    </div>
 
-        <!-- ⑦戻る & ⑧確認へ -->
-        <div class="form-actions">
-            <a href="{{ url()->previous() }}" class="btn btn-secondary">戻る</a>
-            <button type="submit" class="btn btn-primary">確認へ</button>
-        </div>
-    </form>
+    <!-- 電話番号 -->
+    <div class="form-group">
+        <label for="phone">電話番号</label>
+        <input type="tel" id="phone" name="phone" class="form-control" placeholder="電話番号を入力" required>
+    </div>
+
+    <!-- メールアドレス -->
+    <div class="form-group">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="メールアドレスを入力" required>
+    </div>
+
+    <!-- 依頼内容詳細 -->
+    <div class="form-group">
+        <label for="content">依頼内容詳細</label>
+        <textarea id="content" name="content" class="form-control" rows="5" placeholder="依頼内容の詳細を入力" required></textarea>
+    </div>
+
+    <!-- 戻る & ⑧確認へ -->
+    <div class="form-actions">
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">戻る</a>
+        <button type="submit" class="btn btn-primary">確認へ</button>
+    </div>
+</form>
 </div>
 @endsection

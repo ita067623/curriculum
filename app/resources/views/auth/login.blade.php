@@ -39,6 +39,12 @@
         <a href="{{ route('password.request') }}">パスワードを忘れた方はこちらから</a>
       </div>
 
+      <div class="text-right mt-1">
+        <a href="{{ route('guest.login')  }}">ゲストでの使用はこちら</a>
+      </div>
+
+
+
       <div class="text-center mt-4">
         <button type="submit" class="btn btn-primary">ログイン</button>
       </div>

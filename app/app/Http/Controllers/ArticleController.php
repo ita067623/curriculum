@@ -29,29 +29,38 @@ class ArticleController extends Controller
          $articles = Article::all(); // ここを追記
 
 
-         $query = Article::query();
+        //  $query = Article::query();
 
-         // キーワード検索
-         if ($request->filled('keyword')) {
-             $keyword = $request->input('keyword');
-             $query->where(function ($q) use ($keyword) {
-                 $q->where('title', 'like', "%{$keyword}%")
-                   ->orWhere('body', 'like', "%{$keyword}%");
-             });
-         }
+        //  // キーワード検索
+        //  if ($request->filled('keyword')) {
+        //      $keyword = $request->input('keyword');
+        //      $query->where(function ($q) use ($keyword) {
+        //          $q->where('title', 'like', "%{$keyword}%")
+        //            ->orWhere('body', 'like', "%{$keyword}%");
+        //      });
+        //  }
  
-         // 金額フィルター
-         if ($request->filled('price')) {
-             $price = $request->input('price');
-             $query->where('price', '<=', $price);
-         }
+        //  // 金額フィルター
+        //  if ($request->filled('price')) {
+        //      $price = $request->input('price');
+        //      $query->where('price', '<=', $price);
+        //  }
  
-         // 結果を取得
-         $articles = $query->get();
+        //  // 結果を取得
+        //  $articles = $query->get();
+
+
+        // ログインユーザーの役割を確認
+    $user = auth()->user();
+         // 役割が0の場合はオーナーページを表示
+    if ($user && $user->role === 0) {
+        return view('ownerpage'); // オーナーページを表示
+    }
 
 
          // 記事一覧を表示
          return view('articles.index', compact('articles')); // ここを追記
+        
     }
 
     /**

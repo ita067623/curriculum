@@ -11,11 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // // $this->call(UsersTableSeeder::class);
-        // $this->call(ArticleTableSeeder::class); // ここを追加
-        $this->call([
-            ArticleTableSeeder::class,
-            // 他のシーダーもここに追加可能
-        ]);
+        $this->call(AdminUserSeeder::class); 
     }
 }

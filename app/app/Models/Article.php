@@ -28,5 +28,21 @@ class Article extends Model
     }
 
 
+// 検索機能
+    public function scopeSearchKeyword($query, $keyword)
+    {
+        return $query->where(function ($q) use ($keyword) {
+            $q->where('title', 'like', "%{$keyword}%")
+              ->orWhere('body', 'like', "%{$keyword}%");
+        });
+    }
+
+
+    // 記事の投稿者とのリレーション
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
 

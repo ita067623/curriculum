@@ -46,31 +46,27 @@ class User extends Authenticatable
 
 
 
+    // 管理者判定
+public function isAdmin(): bool
+{
+    return $this->role === 0;
+}
+
+// 一般ユーザー判定
+public function isGeneralUser(): bool
+{
+    return $this->role === 2;
+}
+
+// 未ログインユーザー判定
+public function isGuestUser(): bool
+{
+    return $this->role === 1;
+}
+
+
+
     
-
-
-
-    //  管理者判定
-
-    public function isAdmin(): bool
-    {
-        return $this->role === 0;
-    }
-
-    
-    //   一般ユーザー判定
-     
-    public function isGeneralUser(): bool
-    {
-        return $this->role === 2;
-    }
-
-        //   未ログインユーザー判定
-     
-    public function isGuestUser(): bool
-    {
-        return $this->role === 1;
-    }
 }
 
     
