@@ -71,7 +71,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="status" class="col-md-2 col-form-label text-md-right">ステータス</label>
                             <div class="col-md-9">
                                 <div class="form-check form-check-inline">
@@ -86,7 +86,21 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
+                        <div class="form-group row">
+    <label for="status" class="col-md-2 col-form-label text-md-right" style="display: none;">ステータス</label>
+    <div class="col-md-9">
+        <!-- ラジオボタン -->
+        <div class="form-check form-check-inline" style="display: none;">
+            <input class="form-check-input" type="radio" id="open" name="status" value="0" checked>
+            <label class="form-check-label" for="open">公開</label>
+        </div>
+        <div class="form-check form-check-inline" style="display: none;">
+            <input class="form-check-input" type="radio" id="private" name="status" value="1">
+            <label class="form-check-label" for="private">未公開</label>
+        </div>
+    </div>
+</div>
 
                         <div class="form-group row">
                             <label for="content" class="col-md-2 col-form-label text-md-right">本文</label>
