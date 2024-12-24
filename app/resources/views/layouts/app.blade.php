@@ -62,8 +62,12 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+<<<<<<< HEAD
                                     <!-- <a class="dropdown-item" href="{{ route('mypage') }}"> -->
                                     <a class="dropdown-item" href="{{ route('mypage',['id' => $user->id]) }}">
+=======
+                                    <a class="dropdown-item" href="{{ route('mypage') }}">
+>>>>>>> 67c6b7f17c6452430bf2b3c710820d8d2172c6dc
                                      マイページ
                                     </a>
                                 

@@ -25,19 +25,29 @@
         <div class="row pb-3 mb-3 align-items-center">
             <!-- ユーザーアイコン -->
             <div class="col-auto">
+<<<<<<< HEAD
                 <img src="{{ asset($user->image ?? 'default_icon.png') }}"alt="ユーザーアイコン" class="rounded-circle" 
                 style="width: 50px; height: 50px; object-fit: cover;">
 
                      <!-- <img src="{{ asset($user->image ?? 'default_icon.png') }}" alt="ユーザーアイコン" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"> -->
+=======
+                <img src="{{ $article->user_icon ?? asset('images/default-icon.jpg') }}" 
+                     alt="ユーザーアイコン" 
+                     class="rounded-circle" 
+                     style="width: 50px; height: 50px; object-fit: cover;">
+>>>>>>> 67c6b7f17c6452430bf2b3c710820d8d2172c6dc
             </div>
             <!-- 名前と金額 -->
             <div class="col">
                 <p class="mb-1">名前: {{ $article->name }}</p>
                 <p class="mb-0">金額: ¥{{ number_format($article->price) }}</p>
+<<<<<<< HEAD
                 <p class="mb-1">請負状況{{ $article->situation?? 'データなし' }}</p>
                 
                
                
+=======
+>>>>>>> 67c6b7f17c6452430bf2b3c710820d8d2172c6dc
             </div>
             <!-- 違反報告 -->
             <div class="col-auto">
@@ -49,7 +59,10 @@
         <div class="mb-4">
             <h3 class="h6">案件詳細</h3>
             <p>{{ $article->body }}</p>
+<<<<<<< HEAD
             
+=======
+>>>>>>> 67c6b7f17c6452430bf2b3c710820d8d2172c6dc
         </div>
 
         <!-- ボタン部分 -->
@@ -59,7 +72,11 @@
                 <a href="{{ route('request', ['id' => $article->id]) }}" class="btn btn-primary me-2">依頼する</a>
                 <form action="{{ route('nice', ['id' => $article->id]) }}" method="POST">
                     @csrf
+<<<<<<< HEAD
                 
+=======
+                    <button type="submit" class="btn btn-outline-success">♡</button>
+>>>>>>> 67c6b7f17c6452430bf2b3c710820d8d2172c6dc
                 </form>
             </div>
         </div>
