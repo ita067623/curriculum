@@ -12,10 +12,10 @@
                 <p class="card-text">ゲストとしてログインしました。</p>
                 
                 <!-- 会員登録してログインするボタン -->
-                <form action="{{ route('register') }}" method="POST" class="d-inline">
+                <!-- <form action="{{ route('register') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-danger">会員登録してログインする</button>
-                </form>
+                </form> -->
 
                 <!-- ゲストのまま利用するボタン -->
                 <a href="{{ route('articles.index') }}" class="btn btn-secondary d-inline">

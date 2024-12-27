@@ -42,13 +42,13 @@
                 }
             @endphp
 
-            @forelse ($reports as $report)
+            <!-- @forelse ($reports as $report)
                 <tr>
                     <td>{{ $report->id }}</td>
                     <td>{{ $report->user->id ?? '-' }}</td>
                     <td>{{ $report->user->name ?? '未登録' }}</td>
                     <td>{{ $report->post_id }}</td>
-                    <td>{{ $postCounts[$report->post_id] ?? 0 }}</td> <!-- 報告回数を表示 -->
+                    <td>{{ $postCounts[$report->post_id] ?? 0 }}</td> 報告回数を表示
                     <td>{{ $report->post->situation ?? '未設定' }}</td>
                     <td>{{ $report->reason }}</td>
 
@@ -69,7 +69,42 @@
                 <tr>
                     <td colspan="8">報告はありません。</td>
                 </tr>
-            @endforelse
+            @endforelse -->
+
+            @forelse ($reports as $report)
+    <tr>
+        <td>{{ $report->id }}</td>
+        <td>{{ $report->user->id ?? '-' }}</td>
+        <td>{{ $report->user->name ?? '通常' }}</td>
+        <td>{{ $report->post_id }}</td>
+        <td>{{ $postCounts[$report->post_id] ?? 0 }}</td> <!-- 報告回数を表示 -->
+        <td>{{ $report->post->situation ?? '通常' }}</td>
+        <td>{{ $report->reason }}</td>
+
+        <td>
+            <form method="POST" action="{{ route('update_status', $report->post_id) }}">
+                @csrf
+                @method('PATCH')
+                <select name="status" class="form-control" onchange="this.form.submit()">
+                    <option value="通常" {{ $report->post->status === '通常' ? 'selected' : '' }}>通常</option> 
+                    <option value="停止" {{ $report->post->status === '停止' ? 'selected' : '' }}>停止</option>
+                    <option value="削除" {{ $report->post->status === '削除' ? 'selected' : '' }}>削除</option>
+                </select>
+            </form>
+        </td>
+        
+    </tr>
+@empty
+    <tr>
+        <td colspan="8">報告はありません。</td>
+    </tr>
+@endforelse
+
+
+
+
+
+
         </tbody>
     </table>
 @endsection

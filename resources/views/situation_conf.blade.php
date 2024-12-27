@@ -53,19 +53,48 @@
     </div>
 
     <!-- ログイン者が依頼した内容 -->
-    <div class="row justify-content-center mb-5">
+    <!-- <div class="row justify-content-center mb-5">
         <div class="col-md-8">
             <h2 class="text-center mb-4">あなたがした依頼</h2>
             @if(isset($userRequests) && $userRequests->count())
                 @foreach($userRequests as $userRequest)
                     <div class="card mb-4 shadow-sm">
-                        <div class="card-body">
+                        <div class="card-body"> -->
                         
-<a href="{{ route('articles.show', $userRequest->post->id) }}" class="text-decoration-none">
+<!-- <a href="{{ route('articles.show', $userRequest->post->id) }}" class="text-decoration-none"> -->
+<!-- <a href="{{ route('articles.show', $userRequest->post ? $userRequest->post->id : '#') }}" class="text-decoration-none">
                             <h5 class="card-title">依頼ID: {{ $userRequest->id }}</h5>
                         </a>
-                            <!-- <h5 class="card-title">依頼ID: {{ $userRequest->id }}</h5>
-                            </a> -->
+                            <
+                            <p class="card-text">納期: {{ $userRequest->date }}</p>
+                            <p class="text-muted">依頼日: {{ $userRequest->created_at }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p class="text-center text-muted">まだ依頼した内容がありません。</p>
+            @endif
+        </div>
+    </div> -->
+
+
+
+
+
+
+      <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <h2 class="text-center mb-4">あなたがした依頼</h2>
+            @if(isset($userRequests) && $userRequests->count())
+                @foreach($userRequests as $userRequest)
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body"> 
+                        
+<a href="{{ route('articles.show', $userRequest->post->id) }}" class="text-decoration-none">
+<a href="{{ route('articles.show', $userRequest->post ? $userRequest->post->id : '#') }}" class="text-decoration-none">
+                            <h5 class="card-title">依頼ID: {{ $userRequest->id }}</h5>
+                        </a>
+                            
                             <p class="card-text">納期: {{ $userRequest->date }}</p>
                             <p class="text-muted">依頼日: {{ $userRequest->created_at }}</p>
                         </div>

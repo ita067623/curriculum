@@ -8,14 +8,14 @@
         <!-- ボタン -->
         <div class="row justify-content-center">
             <!-- ユーザー案件検索 -->
-            <div class="col-md-4 mb-3">
+            <!-- <div class="col-md-4 mb-3">
                 <a href="{{ route('owner_users.index') }}" class="btn btn-primary btn-block">違反案件操作</a>
-            </div>
+            </div> -->
 
             
             <!-- 停止・削除案件一覧-->
             <div class="col-md-4 mb-3">
-                <a href="{{ route('ownerpage.suspended_deleted_users') }}" class="btn btn-warning btn-block">停止・削除案件一覧</a>
+                <a href="{{ route('ownerpage.suspended_deleted_users') }}" class="btn btn-warning btn-block">案件一覧</a>
             </div>
 
             <!-- 違反者報告一覧 -->
@@ -25,9 +25,21 @@
 
 
             <!-- アカウント停止操作 -->
-            <div class="col-md-4 mb-3">
+            <!-- <div class="col-md-4 mb-3">
                 <a href="{{ route('ownerpage.suspend') }}" class="btn btn-danger btn-block">アカウント停止操作</a>
-            </div>
+            </div> -->
+
+
+             <!-- 案件削除 -->
+             <!-- <div class="col-md-4 mb-3">
+                <a href="{{ route('update.saigo') }}" class="btn btn-danger btn-block">投稿停止操作</a>
+            </div> -->
+
+
+
+
+
+
 
         </div>
     </div>

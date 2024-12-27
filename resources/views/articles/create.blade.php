@@ -88,7 +88,7 @@
                             </div>
                         </div> -->
                         <div class="form-group row">
-    <label for="status" class="col-md-2 col-form-label text-md-right" style="display: none;">ステータス</label>
+    <!-- <label for="status" class="col-md-2 col-form-label text-md-right" style="display: none;">ステータス</label>
     <div class="col-md-9">
         <!-- ラジオボタン -->
         <div class="form-check form-check-inline" style="display: none;">
@@ -100,7 +100,7 @@
             <label class="form-check-label" for="private">未公開</label>
         </div>
     </div>
-</div>
+</div> 
 
                         <div class="form-group row">
                             <label for="content" class="col-md-2 col-form-label text-md-right">本文</label>

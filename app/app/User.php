@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
+use Illuminate\Database\Eloquent\Model;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -63,6 +66,12 @@ public function isGuestUser(): bool
 {
     return $this->role === 1;
 }
+
+
+public function articles()
+    {
+        return $this->hasMany(Article::class, 'user_id');
+    }
 
 
 

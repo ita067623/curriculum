@@ -117,6 +117,23 @@ Route::post('/owner/users/{reportId}/register', [DisplayController::class, 'regi
 
 
 
+// Route::patch('/article/update-status', 'DisplayController@updatesaigo')->name('article.updateStatus');
+
+
+Route::get('/article/update-status', function () {
+    return view('article.updateStatusForm');
+});
+
+Route::get('/ownerpage/saigono', [DisplayController::class, 'saigono'])->name('update.saigo');
+
+Route::put('/users/{id}/update-role', [DisplayController::class, 'updateRole'])->name('users.updateRole');
+Route::put('articles/{id}/update-status', [DisplayController::class, 'updateStatus'])->name('articles.updateStatus');
+
+// Route::get('/ownerpage/userstan', [DisplayController::class, 'userstan'])->name('user.stan');
+
+
+
+
 
 
 

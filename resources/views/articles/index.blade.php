@@ -17,6 +17,11 @@
         <option value="3000" {{ request('min_price') == 3000 ? 'selected' : '' }}>3,000円</option>
         <option value="4000" {{ request('min_price') == 4000 ? 'selected' : '' }}>4,000円</option>
         <option value="5000" {{ request('min_price') == 5000 ? 'selected' : '' }}>5,000円</option>
+        <option value="6000" {{ request('max_price') == 6000 ? 'selected' : '' }}>6,000円</option>
+        <option value="7000" {{ request('max_price') == 7000 ? 'selected' : '' }}>7,000円</option>
+        <option value="8000" {{ request('max_price') == 8000 ? 'selected' : '' }}>8,000円</option>
+        <option value="9000" {{ request('max_price') == 9000 ? 'selected' : '' }}>9,000円</option>
+        <option value="10000" {{ request('max_price') == 10000 ? 'selected' : '' }}>10,000円</option>
       </select>
     </div>
 
@@ -27,6 +32,11 @@
     <div class="col-md-3 mb-3">
       <select class="form-control" name="max_price">
         <option value="">最高金額を選択</option>
+        <option value="1000" {{ request('min_price') == 1000 ? 'selected' : '' }}>1,000円</option>
+        <option value="2000" {{ request('min_price') == 2000 ? 'selected' : '' }}>2,000円</option>
+        <option value="3000" {{ request('min_price') == 3000 ? 'selected' : '' }}>3,000円</option>
+        <option value="4000" {{ request('min_price') == 4000 ? 'selected' : '' }}>4,000円</option>
+        <option value="5000" {{ request('min_price') == 5000 ? 'selected' : '' }}>5,000円</option>
         <option value="6000" {{ request('max_price') == 6000 ? 'selected' : '' }}>6,000円</option>
         <option value="7000" {{ request('max_price') == 7000 ? 'selected' : '' }}>7,000円</option>
         <option value="8000" {{ request('max_price') == 8000 ? 'selected' : '' }}>8,000円</option>

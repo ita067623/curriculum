@@ -72,94 +72,172 @@ class DisplayController extends Controller
 
     // オーナーページサーチの案件表示停止
 
-    public function ownerindex(Request $request)
-{
-    $search = $request->input('search', '');
-    $sort = $request->input('sort', 'id');
+//     public function ownerindex(Request $request)
+// {
+//     $search = $request->input('search', '');
+//     $sort = $request->input('sort', 'id');
 
-    // reportsテーブルのデータを検索・並び替えし、関連するユーザー情報も取得
-    // $reports = Report::with('user', 'post.user') // user と post.user リレーションをロード
-    $reports = Report::with('user', 'post') 
-        ->select('reports.*', \DB::raw('(SELECT COUNT(*) FROM reports r WHERE r.post_id = reports.post_id) as reports_count')) // サブクエリで件数を計算
-        ->when($search, function ($query, $search) {
-            $query->where('reason', 'like', "%{$search}%");
-        })
-        ->orderBy($sort === 'reports_count' ? 'reports_count' : $sort, 'desc') // 並び替え条件
-        ->paginate(20);
+//     // reportsテーブルのデータを検索・並び替えし、関連するユーザー情報も取得
+//     // $reports = Report::with('user', 'post.user') // user と post.user リレーションをロード
+//     $reports = Report::with('user', 'post') 
+//         ->select('reports.*', \DB::raw('(SELECT COUNT(*) FROM reports r WHERE r.post_id = reports.post_id) as reports_count')) // サブクエリで件数を計算
+//         ->when($search, function ($query, $search) {
+//             $query->where('reason', 'like', "%{$search}%");
+//         })
+//         ->orderBy($sort === 'reports_count' ? 'reports_count' : $sort, 'desc') // 並び替え条件
+//         ->paginate(20);
 
-    // 同じ post_id ごとの報告回数をクエリで取得（ビューで利用する場合に保持）
-    $postCounts = Report::select('post_id', \DB::raw('count(*) as count'))
-        ->groupBy('post_id')
-        ->pluck('count', 'post_id'); // post_idをキーにしてcountを取得
+//     // 同じ post_id ごとの報告回数をクエリで取得（ビューで利用する場合に保持）
+//     $postCounts = Report::select('post_id', \DB::raw('count(*) as count'))
+//         ->groupBy('post_id')
+//         ->pluck('count', 'post_id'); // post_idをキーにしてcountを取得
 
-    return view('ownerpage_serch', compact('reports', 'search', 'sort', 'postCounts'));
-}
+//     return view('ownerpage_serch', compact('reports', 'search', 'sort', 'postCounts'));
+// }
 
 
 
 
 // オーナーページサーチの投稿削除
 
-public function upStatus(Request $request, $postId)
-{
-    // post_idに該当する投稿を取得
-    $post = Article::findOrFail($postId);
+// public function upStatus(Request $request, $postId)
+// {
+//     // post_idに該当する投稿を取得
+//     // $post = Article::findOrFail($postId);
+//     try {
+//         $post = Article::findOrFail($postId);
+//     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+//         // 見つからなかった場合は、エラーメッセージを表示
+//         return redirect()->route('owner_users.index')->with('error', '投稿が見つかりませんでした。');
+//     }
 
-    // フォームから送信されたstatusを設定
-    $post->status = $request->input('status');
+//     // フォームから送信されたstatusを設定
+//     $post->status = $request->input('status');
     
-    // 保存
-    $post->save();
+//     // 保存
+//     $post->save();
 
-    // リダイレクトまたはビューへ
-    // return redirect()->route('owner_users.index')->with('success', '違反対応のステータスが更新されました');
-    return redirect()->route('owner_users.index')->with('success', '違反対応のステータスが更新されました');
-}
+//     // リダイレクトまたはビューへ
+//     return redirect()->route('owner_users.index')->with('success', '違反対応のステータスが更新されました');
+// }
 
 
 // ユーザー停止・削除　者　一覧
 
 
+// public function ownerpagedetail()
+// {
+//     // user_reportsテーブルからデータを取得
+//     $reports = UserReport::all();
+
+//     // 各ユーザーの名前をUserテーブルから取得
+//     foreach ($reports as $report) {
+//         // user_idを使ってUserテーブルから名前を取得
+//         $user = User::find($report->user_id);
+//         $report->user_name = $user ? $user->name : '不明';
+
+//         // 各ユーザーのArticleテーブルでステータスが削除または停止の件数を取得
+//         $report->article_count = Article::where('user_id', $report->user_id)
+//                                          ->whereIn('status', ['削除', '停止'])
+//                                          ->count();
+//     }
+
+//    // article_countの多い順に並べる
+// $sortedReports = $reports->sortByDesc('article_count');
+
+
+// return view('ownerpage_report2', ['reports' => $sortedReports]);
+// }
+
 public function ownerpagedetail()
 {
-    // user_reportsテーブルからデータを取得
-    $reports = UserReport::all();
-
-    // 各ユーザーの名前をUserテーブルから取得
-    foreach ($reports as $report) {
-        // user_idを使ってUserテーブルから名前を取得
-        $user = User::find($report->user_id);
-        $report->user_name = $user ? $user->name : '不明';
-
-        // 各ユーザーのArticleテーブルでステータスが削除または停止の件数を取得
-        $report->article_count = Article::where('user_id', $report->user_id)
-                                         ->whereIn('status', ['削除', '停止'])
-                                         ->count();
-    }
-
-   // article_countの多い順に並べる
-$sortedReports = $reports->sortByDesc('article_count');
+//     // Userテーブルからデータを取得し、各ユーザーの記事数を計算
+//     $users = User::select('users.*')
+//         ->withCount(['articles as article_count' => function ($query) {
+//             $query->whereIn('status', ['削除', '停止']);
+//         }])
+//         ->orderByDesc('article_count') // 削除・停止記事数で降順ソート
+//         ->paginate(10); // 1ページあたりの件数
 
 
-return view('ownerpage_report2', ['reports' => $sortedReports]);
+$users = User::select('users.id', 'users.name','users.role',  \DB::raw('COUNT(articles.id) as article_count'))
+        ->join('articles', 'users.id', '=', 'articles.user_id')
+        ->whereIn('articles.status', ['停止', '削除'])
+        ->groupBy('users.id', 'users.name')
+        ->orderByDesc('article_count') // 記事数で降順ソート
+        ->paginate(10); // 1ページあたりの件数
+
+    // ビューにデータを渡す
+    return view('ownerpage_report2', ['reports' => $users]);
+
+
+
+      
+
+//     // ビューにデータを渡す
+//     return view('ownerpage_report2', ['reports' => $users ]);
+}
+
+
+public function updateRole($id)
+{
+    // ユーザーを取得
+    $user = User::findOrFail($id);
+
+    // roleを4に変更
+    $user->role = 4;
+    $user->save();
+
+    // 成功メッセージをセッションに保存し、リダイレクト
+    return redirect()->back()->with('success', 'ユーザーのロールを停止に変更しました。');
 }
 
 
 
 
-// 停止・削除　案件　一覧
+
+// 　案件一覧
 
 public function suspendedOrDeletedUsers()
 {
-    // 停止・削除の状態を持つ記事をカウントして、ユーザーごとに集計
-    $articles = Article::select('user_id', \DB::raw('COUNT(*) as count'))
-        ->whereIn('status', ['停止', '削除'])  // statusが'停止'か'削除'のもの
-        ->groupBy('user_id')  // user_idごとにグループ化
-        ->orderByDesc('count')  // カウント数で降順ソート
-        ->paginate(10);  // 10名ずつ表示
+    // // 停止・削除の状態を持つ記事をカウントして、ユーザーごとに集計
+    // $articles = Article::select('user_id', \DB::raw('COUNT(*) as count'))
+    //     ->whereIn('status', ['停止', '削除'])  // statusが'停止'か'削除'のもの
+    //     ->groupBy('user_id')  // user_idごとにグループ化
+    //     ->orderByDesc('count')  // カウント数で降順ソート
+    //     ->paginate(10);  // 10名ずつ表示
 
-    return view('ownerpage_suspended_deleted_users', compact('articles'));
+    // return view('ownerpage_suspended_deleted_users', compact('articles'));
+
+
+   
+    
+        // reportsテーブルと記事の投稿数をカウントして、関連する情報を取得
+        $articles = Article::select('articles.id', 'articles.title', 'articles.status', \DB::raw('COUNT(reports.id) as report_count'))
+            ->leftJoin('reports', 'articles.id', '=', 'reports.post_id')  // reportsテーブルとジョイン
+            ->groupBy('articles.id', 'articles.title', 'articles.status')  // 必要なカラムでグループ化
+            ->orderByDesc('report_count')  // 報告数で降順ソート
+            ->paginate(20);  // 20件ずつ表示
+    
+        return view('ownerpage_suspended_deleted_users', compact('articles'));
+    }
+    
+
+public function updateStatus($id)
+{
+    // 指定したIDの記事を取得
+    $article = Article::find($id);
+
+    if ($article) {
+        // ステータスを「停止」に変更
+        $article->status = '停止';
+        $article->save();
+    }
+
+    // 元のページにリダイレクト
+    return redirect()->route('ownerpage.suspended_deleted_users');
 }
+
    
 
 
@@ -169,29 +247,29 @@ public function suspendedOrDeletedUsers()
 
 // アカウント削除ownerpage_serch2' view
 
-public function suspend(Request $request)
-{
-    $search = $request->input('search', '');
-    $sort = $request->input('sort', 'id');
+// public function suspend(Request $request)
+// {
+//     $search = $request->input('search', '');
+//     $sort = $request->input('sort', 'id');
 
-    // reportsテーブルのデータを検索・並び替えし、関連するユーザー情報も取得
-    $reports = Report::with('user', 'post') // user と post リレーションをロード
-        ->select('reports.*', \DB::raw('(SELECT COUNT(*) FROM reports r WHERE r.post_id = reports.post_id) as reports_count')) // サブクエリで件数を計算
-        ->when($search, function ($query, $search) {
-            $query->where('reason', 'like', "%{$search}%");
-        })
-        ->orderBy($sort === 'reports_count' ? 'reports_count' : $sort, 'desc') // 並び替え条件
-        ->paginate(20);
+//     // reportsテーブルのデータを検索・並び替えし、関連するユーザー情報も取得
+//     $reports = Report::with('user', 'post') // user と post リレーションをロード
+//         ->select('reports.*', \DB::raw('(SELECT COUNT(*) FROM reports r WHERE r.post_id = reports.post_id) as reports_count')) // サブクエリで件数を計算
+//         ->when($search, function ($query, $search) {
+//             $query->where('reason', 'like', "%{$search}%");
+//         })
+//         ->orderBy($sort === 'reports_count' ? 'reports_count' : $sort, 'desc') // 並び替え条件
+//         ->paginate(20);
 
-    // 同じ post_id ごとの報告回数をクエリで取得（ビューで利用する場合に保持）
-    $postCounts = Report::select('post_id', \DB::raw('count(*) as count'))
-        ->groupBy('post_id')
-        ->pluck('count', 'post_id'); // post_idをキーにしてcountを取得
+//     // 同じ post_id ごとの報告回数をクエリで取得（ビューで利用する場合に保持）
+//     $postCounts = Report::select('post_id', \DB::raw('count(*) as count'))
+//         ->groupBy('post_id')
+//         ->pluck('count', 'post_id'); // post_idをキーにしてcountを取得
 
-    // return view('ownerpage_serch2', compact('reports', 'search', 'sort', 'postCounts'));
-    return view('ownerpage_serch2', compact('reports', 'search', 'sort', 'postCounts'));
+//     // return view('ownerpage_serch2', compact('reports', 'search', 'sort', 'postCounts'));
+//     return view('ownerpage_serch2', compact('reports', 'search', 'sort', 'postCounts'));
     
-}
+// }
 
 
 
@@ -257,43 +335,43 @@ public function suspend(Request $request)
 // }
 
 
-// サーチ２　違反者停止
-public function registerStatus(Request $request, $reportId)
-{
-    $userId = $request->input('user_id');
-    $status = $request->input('status', 'default'); // デフォルトステータス
+// // サーチ２　違反者停止
+// public function registerStatus(Request $request, $reportId)
+// {
+//     $userId = $request->input('user_id');
+//     $status = $request->input('status', 'default'); // デフォルトステータス
 
-    DB::beginTransaction();
+//     DB::beginTransaction();
 
-    try {
-        \Log::info('処理開始', ['user_id' => $userId, 'status' => $status]);
+//     try {
+//         \Log::info('処理開始', ['user_id' => $userId, 'status' => $status]);
         
-        // user_reports テーブルにデータ登録
-        $userReport = UserReport::create([
-            'user_id' => $userId,
-            'status' 
-        ]);
-        \Log::info('user_reports に登録成功', ['user_report_id' => $userReport->id]);
+//         // user_reports テーブルにデータ登録
+//         $userReport = UserReport::create([
+//             'user_id' => $userId,
+//             'status' 
+//         ]);
+//         \Log::info('user_reports に登録成功', ['user_report_id' => $userReport->id]);
 
-        // dd($request->all());
+//         // dd($request->all());
 
-        // users テーブルの role を更新
-        $user = User::findOrFail($userId);
-        $user->role = 4;
-        $user->save();
-        \Log::info('users の role 更新成功', ['user_id' => $userId]);
+//         // users テーブルの role を更新
+//         $user = User::findOrFail($userId);
+//         $user->role = 4;
+//         $user->save();
+//         \Log::info('users の role 更新成功', ['user_id' => $userId]);
 
-        DB::commit();
-        \Log::info('トランザクションコミット成功');
+//         DB::commit();
+//         \Log::info('トランザクションコミット成功');
 
-        return redirect()->route('ownerpage.suspend')->with('status', 'データが登録されました。');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        \Log::error('エラーが発生: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
-        return redirect()->route('ownerpage.suspend')->with('error', 'データの登録に失敗しました: ' . $e->getMessage());
-        // return redirect()-> view('ownerpage_serch2')->with('error', 'データの登録に失敗しました: ' . $e->getMessage());
-    }
-}
+//         return redirect()->route('ownerpage.suspend')->with('status', 'データが登録されました。');
+//     } catch (\Exception $e) {
+//         DB::rollBack();
+//         \Log::error('エラーが発生: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+//         return redirect()->route('ownerpage.suspend')->with('error', 'データの登録に失敗しました: ' . $e->getMessage());
+//         // return redirect()-> view('ownerpage_serch2')->with('error', 'データの登録に失敗しました: ' . $e->getMessage());
+//     }
+// }
 
 
 
@@ -385,6 +463,55 @@ public function registerStatus(Request $request, $reportId)
 //         ['status' => $status]    // 更新するデータ
 //     );
 // }
+
+
+
+//  public function saigono( ){
+    
+//     return view('updateStatusForm');
+//  }
+
+
+
+// public function saigono() 
+// {
+//     $user = User::all(); 
+
+
+//     // 同じ post_id ごとの報告回数をクエリで取得（ビューで利用する場合に保持）
+//     $postCounts = Report::select('post_id', \DB::raw('count(*) as count'))
+//         ->groupBy('post_id')
+//         ->pluck('count', 'post_id'); // post_idをキーにしてcountを取得
+    
+//     return view('updateStatusForm', compact('user', 'postCounts')); 
+// }
+
+
+
+
+// public function updatesaigo(Request $request)
+//     {
+//         $id = $request->input('id'); // フォームから送信された ID
+
+//         // ID に該当する記事を取得
+//         $article = Article::findOrFail($id);
+
+//         // ステータスを「停止」に更新
+//         $article->status = '停止';
+//         $article->save();
+
+//         return redirect()->back()->with('success', 'ステータスが停止に更新されました。');
+//     }
+
+
+
+
+
+
+
+//     public function userstan(){
+//         view('signup');
+//     }
     
 
  
@@ -782,8 +909,8 @@ public function request($id)
 
 
     // 完了ページやリダイレクト先に進む
-    return redirect()->route('situation.confirm')->with('success', '依頼が送信されました');
-    // return redirect()->route('articles.index')->with('success', '依頼が送信されました');
+    // return redirect()->route('situation.confirm')->with('success', '依頼が送信されました');
+    return redirect()->route('articles.index')->with('success', '依頼が送信されました');
 } 
 
 

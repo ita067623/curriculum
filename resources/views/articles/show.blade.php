@@ -39,28 +39,61 @@
                 <p class="mb-0">金額: ¥{{ number_format($article->price) }}</p>
                 <p class="mb-1"><span class="bold-text">請負状況：</span><strong>{{ $article->situation?? 'データなし' }}</strong></p>
             </div>
-            <!-- 違反報告 -->
+            <!-- 違反報告
             <div class="col-auto">
+            @if (auth()->user()->role != 1)
                 <a href="{{ route('report', ['id' => $article->id]) }}" class="text-danger">違反報告</a>
             </div>
-        </div>
+            @endif
+        </div> -->
+        <!-- 違反報告 -->
+<div class="col-auto" @if (auth()->user()->role == 1) style="display: none;" @endif>
+    <a href="{{ route('report', ['id' => $article->id]) }}" class="text-danger">違反報告</a>
+</div>
+</div>
 
-        <!-- 案件詳細部分 -->
-        <div class="mb-4">
+        <!-- 案件詳細部分  -->
+        <!-- <div class="mb-4">
             <h3 class="h6">案件詳細</h3>
             <p>{{ $article->body }}</p>
-        </div>
+        </div> -->
 
-        <!-- ボタン部分 -->
-        <div class="d-flex justify-content-between">
+         <!-- ボタン部分  -->
+        <!-- <div class="d-flex justify-content-between">
             <a href="javascript:history.back();" class="btn btn-success">戻る</a>
-            <div class="d-flex align-items-center">
-                <a href="{{ route('request', ['id' => $article->id]) }}" class="btn btn-primary me-2">依頼する</a>
-                <form action="{{ route('nice', ['id' => $article->id]) }}" method="POST">
-                    @csrf
-                    <!-- <button type="submit" class="btn btn-outline-success">♡</button> -->
-                </form>
-            </div>
-        </div>
+            <div class="d-flex align-items-center"@if (auth()->user()->role == 1)style="display: none;" @endif>
+                 <a href="{{ route('request', ['id' => $article->id]) }}" class="btn btn-primary me-2  >依頼する</a> 
+                <<form action="{{ route('nice', ['id' => $article->id]) }}" method="POST">   -->
+                    
+                
+                
+                <!-- @csrf -->
+                    <!-- <button type="submit" class="btn btn-outline-success">♡</button>  -->
+
+                <!-- </form>  -->
+               
+            <!-- </div>
+        </div>  -->
+
+
+        <!-- 案件詳細部分 -->
+<div class="mb-4">
+    <h3 class="h6">案件詳細</h3>
+    <p>{{ $article->body }}</p>
+</div>
+
+<!-- ボタン部分 -->
+<div class="d-flex justify-content-between">
+    <a href="javascript:history.back();" class="btn btn-success">戻る</a>
+    <div  class="d-flex align-items-center"  >
+        <a href="{{ route('request', ['id' => $article->id]) }}"  class="btn btn-primary me-2" @if (auth()->user()->role == 1) 
+           hidden 
+       @endif>
+       
+        依頼する
+        </a>
+    </div>
+</div>
+
     </div>
 @endsection
